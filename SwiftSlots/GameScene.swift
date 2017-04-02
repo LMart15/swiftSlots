@@ -11,61 +11,77 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    //let textureAtlas = SKTextureAtlas(named:"slotImages")
+    var spriteArray = Array<SKTexture>();
     
+    var wheel1_sprite = SKSpriteNode()
+    var wheel2_sprite = SKSpriteNode()
+    var wheel3_sprite = SKSpriteNode()
+    
+    var spinButton = UIButton()
+    
+   
     override func didMove(to view: SKView) {
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        spriteArray.append(SKTexture(imageNamed:"banana"));
+        spriteArray.append(SKTexture(imageNamed:"bar"));
+        spriteArray.append(SKTexture(imageNamed:"bell"));
+        spriteArray.append(SKTexture(imageNamed:"cherry"));
+        spriteArray.append(SKTexture(imageNamed:"grapes"));
+        spriteArray.append(SKTexture(imageNamed:"orange"));
+        spriteArray.append(SKTexture(imageNamed:"seven"));
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(M_PI), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
+        self.wheel1_sprite = SKSpriteNode(texture:scrambleArray(array: spriteArray)[0]);
+        self.wheel1_sprite.position = CGPoint(x:self.frame.minX + wheel1_sprite.size.width, y:self.frame.midY)
+        self.addChild(wheel1_sprite)
+        
+        self.wheel2_sprite = SKSpriteNode(texture:scrambleArray(array: spriteArray)[0])
+        self.wheel2_sprite.position = CGPoint(x:self.frame.midX, y:self.frame.midY)
+        self.addChild(wheel2_sprite)
+        
+        self.wheel3_sprite = SKSpriteNode(texture:scrambleArray(array: spriteArray)[0])
+        self.wheel3_sprite.position = CGPoint(x: self.frame.maxX - wheel3_sprite.size.width, y: self.frame.midY)
+        self.addChild(wheel3_sprite)
+        
+    }
+    
+    func spinWheels(){
+        
+        let spinAction1 = SKAction.animate(with: scrambleArray(array: spriteArray), timePerFrame: 0.05)
+        let spinAction2 = SKAction.animate(with: scrambleArray(array: spriteArray), timePerFrame: 0.05)
+        let spinAction3 = SKAction.animate(with: scrambleArray(array: spriteArray), timePerFrame: 0.05)
+        let spinSlot1 = SKAction.repeat(spinAction1, count: 10)
+        let spinSlot2 = SKAction.repeat(spinAction2, count: 13)
+        let spinSlot3 = SKAction.repeat(spinAction3, count: 16)
+        
+        self.wheel1_sprite.run(spinSlot1)
+        self.wheel2_sprite.run(spinSlot2)
+        self.wheel3_sprite.run(spinSlot3)
+        
+    }
+    
+    func scrambleArray(array: Array<SKTexture>) -> (Array<SKTexture>){
+    
+        var shuffledSpriteArray = Array<SKTexture>();
+        shuffledSpriteArray = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: array) as! Array<SKTexture>
+        return shuffledSpriteArray
     }
     
     
     func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
+     
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
+     
     }
     
     func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
+     
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
         
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
