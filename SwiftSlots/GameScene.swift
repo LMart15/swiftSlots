@@ -52,7 +52,7 @@ class GameScene: SKScene {
         self.wheel2_sprite.position = CGPoint(x:self.frame.midX, y:self.frame.midY)
         self.addChild(wheel2_sprite)
         
-        self.wheel3_sprite = SKSpriteNode(texture:randomizeArray(array: spriteArray)[0])
+        self.wheel3_sprite = SKSpriteNode(texture:scrambleArray(array: spriteArray)[0])
         self.wheel3_sprite.position = CGPoint(x: self.frame.maxX - wheel3_sprite.size.width * 1.4, y: self.frame.midY)
         self.addChild(wheel3_sprite)
         
@@ -62,9 +62,9 @@ class GameScene: SKScene {
     
     func spinWheels(){
         
-        let spinAction1 = SKAction.animate(with: randomizeArray(array: spriteArray), timePerFrame: 0.05)
-        let spinAction2 = SKAction.animate(with: randomizeArray(array: spriteArray), timePerFrame: 0.05)
-        let spinAction3 = SKAction.animate(with: randomizeArray(array: spriteArray), timePerFrame: 0.05)
+        let spinAction1 = SKAction.animate(with: scrambleArray(array: spriteArray), timePerFrame: 0.05)
+        let spinAction2 = SKAction.animate(with: scrambleArray(array: spriteArray), timePerFrame: 0.05)
+        let spinAction3 = SKAction.animate(with: scrambleArray(array: spriteArray), timePerFrame: 0.05)
         let spinSlot1 = SKAction.repeat(spinAction1, count: 10)
         let spinSlot2 = SKAction.repeat(spinAction2, count: 13)
         let spinSlot3 = SKAction.repeat(spinAction3, count: 16)
@@ -86,7 +86,7 @@ class GameScene: SKScene {
     
     }
     
-    func randomizeArray(array: Array<SKTexture>) -> (Array<SKTexture>){
+    func scrambleArray(array: Array<SKTexture>) -> (Array<SKTexture>){
     
         var shuffledSpriteArray = Array<SKTexture>();
         shuffledSpriteArray = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: array) as! Array<SKTexture>
