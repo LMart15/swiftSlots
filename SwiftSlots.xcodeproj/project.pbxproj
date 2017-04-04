@@ -15,6 +15,7 @@
 		555AC8EA1E90952300302F52 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 555AC8E81E90952300302F52 /* Main.storyboard */; };
 		555AC8EC1E90952300302F52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 555AC8EB1E90952300302F52 /* Assets.xcassets */; };
 		555AC8EF1E90952400302F52 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 555AC8ED1E90952400302F52 /* LaunchScreen.storyboard */; };
+		55A8680B1E93262F00C4653C /* spin_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 55A8680A1E93262F00C4653C /* spin_sound.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		555AC8EB1E90952300302F52 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		555AC8EE1E90952400302F52 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		555AC8F01E90952400302F52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55A8680A1E93262F00C4653C /* spin_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = spin_sound.mp3; path = ../../../../../../../../Downloads/spin_sound.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				555AC8E81E90952300302F52 /* Main.storyboard */,
 				555AC8EB1E90952300302F52 /* Assets.xcassets */,
 				555AC8ED1E90952400302F52 /* LaunchScreen.storyboard */,
+				55A8680A1E93262F00C4653C /* spin_sound.mp3 */,
 				555AC8F01E90952400302F52 /* Info.plist */,
 			);
 			path = SwiftSlots;
@@ -137,6 +140,7 @@
 				555AC8E11E90952300302F52 /* GameScene.sks in Resources */,
 				555AC8EC1E90952300302F52 /* Assets.xcassets in Resources */,
 				555AC8EF1E90952400302F52 /* LaunchScreen.storyboard in Resources */,
+				55A8680B1E93262F00C4653C /* spin_sound.mp3 in Resources */,
 				555AC8E31E90952300302F52 /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

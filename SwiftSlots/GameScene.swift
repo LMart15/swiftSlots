@@ -15,6 +15,8 @@ class GameScene: SKScene {
     var currentBet: Int = 0
     var currentBalance: Int = 999
     
+    let spinSound = SKAudioNode(fileNamed: "spin_sound.mp3")
+    
     //labels
     var betLabel = SKLabelNode()
     var betAmtLabel = SKLabelNode()
@@ -44,8 +46,7 @@ class GameScene: SKScene {
     var resetButton = SKSpriteNode()
     
     var isSpinning:Bool = false
-    
-   
+
     override func didMove(to view: SKView) {
         
         let background = SKSpriteNode(imageNamed: "beach_background.jpg")
@@ -58,49 +59,51 @@ class GameScene: SKScene {
         spriteArray.append(SKTexture(imageNamed:"banana"));
         spriteArray.append(SKTexture(imageNamed:"orange"));
         spriteArray.append(SKTexture(imageNamed:"seven"));
+        spriteArray.append(SKTexture(imageNamed:"banana"));
         spriteArray.append(SKTexture(imageNamed:"bell"));
         spriteArray.append(SKTexture(imageNamed:"bar"));
         spriteArray.append(SKTexture(imageNamed:"banana"));
         spriteArray.append(SKTexture(imageNamed:"orange"));
         spriteArray.append(SKTexture(imageNamed:"seven"));
         spriteArray.append(SKTexture(imageNamed:"cherry"));
+        spriteArray.append(SKTexture(imageNamed:"banana"));
         spriteArray.append(SKTexture(imageNamed:"grapes"));
         spriteArray.append(SKTexture(imageNamed:"orange"));
         
         self.gameTitle = SKSpriteNode(imageNamed: "SWIFT-SLOTS")
         self.gameTitle.xScale = self.wheelHouse.xScale * 1.3
         self.gameTitle.yScale = 1.3
-        self.gameTitle.position = CGPoint(x:self.frame.midX, y:self.frame.height / 3)
+        self.gameTitle.position = CGPoint(x:self.frame.midX, y:self.frame.height / 2.75)
         self.addChild(gameTitle)
         
         self.jackpotLabel.text = "CURRENT JACKPOT:"
         self.jackpotLabel.fontColor = UIColor.black
         self.jackpotLabel.fontSize = 32
-        self.jackpotLabel.fontName = "Noteworthy-Bold "
+        self.jackpotLabel.fontName = "Optima-ExtraBlack"
         self.jackpotLabel.position = CGPoint(x:self.frame.midX, y:self.frame.height / 4)
         self.addChild(jackpotLabel)
         
         formatter.numberStyle = .currency
         var jackpotString = formatter.string(for: self.jackpot)
         self.jackpotAmtLabel.text = jackpotString!
-        self.jackpotAmtLabel.fontColor = UIColor.yellow
+        self.jackpotAmtLabel.fontColor = UIColor(red:0.93, green:0.18, blue:0.18, alpha:1.0)
         self.jackpotAmtLabel.fontSize = 72
-        self.jackpotAmtLabel.fontName = "Noteworthy-Bold "
+        self.jackpotAmtLabel.fontName = "Optima-ExtraBlack"
         self.jackpotAmtLabel.position = CGPoint(x:self.frame.midX, y:self.frame.height / 5.5)
         self.addChild(jackpotAmtLabel)
         
-        self.balanceLabel.text = "BALANCE: "
-        self.balanceLabel.fontColor = UIColor.blue
-        self.balanceLabel.fontSize = 32
+        self.balanceLabel.text = "CREDITS: "
+        self.balanceLabel.fontColor = UIColor.black
+        self.balanceLabel.fontSize = 24
         self.balanceLabel.fontName = "Optima-ExtraBlack"
-        self.balanceLabel.position = CGPoint(x:self.frame.midX - balanceLabel.frame.width, y:-300)
+        self.balanceLabel.position = CGPoint(x:self.frame.midX, y:-250)
         self.addChild(balanceLabel)
         
         self.balanceAmtLabel.text = "\(self.currentBalance)"
-        self.balanceAmtLabel.fontColor = UIColor.blue
-        self.balanceAmtLabel.fontSize = 48
+        self.balanceAmtLabel.fontColor = UIColor(red:0.93, green:0.18, blue:0.18, alpha:1.0)
+        self.balanceAmtLabel.fontSize = 72
         self.balanceAmtLabel.fontName = "Optima-ExtraBlack"
-        self.balanceAmtLabel.position = CGPoint(x:self.frame.midX, y:-300)
+        self.balanceAmtLabel.position = CGPoint(x:self.frame.midX, y:-325)
         self.addChild(balanceAmtLabel)
         
         self.wheelHouse = SKSpriteNode(imageNamed: "GDf8f")
@@ -148,15 +151,19 @@ class GameScene: SKScene {
     
     func spinWheels(){
         
-        if(self.currentBalance > self.currentBet){
+        if(self.currentBalance >= self.currentBet && !self.isSpinning){
+            
+        self.isSpinning = true
         
         let spinAction1 = SKAction.animate(with: scrambleArray(array: spriteArray), timePerFrame: 0.05)
         let spinAction2 = SKAction.animate(with: scrambleArray(array: spriteArray), timePerFrame: 0.05)
         let spinAction3 = SKAction.animate(with: scrambleArray(array: spriteArray), timePerFrame: 0.05)
-        let spinSlot1 = SKAction.repeat(spinAction1, count: 2)
-        let spinSlot2 = SKAction.repeat(spinAction2, count: 3)
-        let spinSlot3 = SKAction.repeat(spinAction3, count: 4)
         
+        let spinSlot1 = SKAction.repeat(spinAction1, count: 4)
+        let spinSlot2 = SKAction.repeat(spinAction2, count: 5)
+        let spinSlot3 = SKAction.repeat(spinAction3, count: 7)
+        
+        playSpinSound()
         self.wheel1_sprite.run(spinSlot1)
         self.wheel2_sprite.run(spinSlot2)
         self.wheel3_sprite.run(spinSlot3, completion: {
@@ -164,6 +171,11 @@ class GameScene: SKScene {
         })
         }
     
+    }
+    
+    func playSpinSound(){
+        let soundAction = SKAction.playSoundFileNamed("spin_sound.mp3", waitForCompletion: false)
+        run(soundAction)
     }
     
     func checkForWin(){
@@ -194,6 +206,7 @@ class GameScene: SKScene {
             else if(self.wheel1_sprite.texture?.description == SKTexture(imageNamed: "seven").description){
                 self.currentBalance += self.jackpot
                 self.balanceAmtLabel.text = "\(self.currentBalance)"
+                self.jackpotAmtLabel.text = "YOU WON!!!!"
             }
         }else{
             print("Loser")
@@ -206,6 +219,8 @@ class GameScene: SKScene {
             self.jackpotAmtLabel.text = jackpotString!
             }
         }
+        
+        self.isSpinning = false
     
     }
     
@@ -243,7 +258,6 @@ class GameScene: SKScene {
             let touchLocation = t.location(in: self)
             
             if spinButton.contains(touchLocation) {
-                print("tapped!")
                 spinWheels()
             }
             
@@ -261,7 +275,25 @@ class GameScene: SKScene {
             if bet100Button.contains(touchLocation) {
                 activateBet100()
             }
+            if resetButton.contains(touchLocation) {
+                initSlots()
+            }
+            if quitButton.contains(touchLocation) {
+                //Not sure what desired behaviour of Quit button should be
+                //Exiting is a violation of iOS Human Interface Guidelines
+                //Luckily this is not going for App Store Review!
+                exit(0)
+            }
         }
+    }
+    
+    func initSlots(){
+        activateBet1()
+        self.currentBalance = 999
+        self.jackpot = 1000000
+        self.balanceAmtLabel.text = "\(self.currentBalance)"
+        var jackpotString = formatter.string(for: self.jackpot)
+        self.jackpotAmtLabel.text = jackpotString!
     }
     
     func activateBet1(){
